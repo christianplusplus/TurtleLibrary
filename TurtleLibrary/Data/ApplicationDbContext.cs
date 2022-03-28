@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TurtleLibrary.Models;
 
 namespace TurtleLibrary.Data
 {
@@ -12,5 +13,6 @@ namespace TurtleLibrary.Data
             : base(options)
         {
         }
+        public DbSet<TurtleLibrary.Models.Turtle> Turtle { get; set; }
     }
 }
