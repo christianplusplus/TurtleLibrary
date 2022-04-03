@@ -10,7 +10,7 @@ using TurtleLibrary.Data;
 namespace TurtleLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220328181239_InitialCreate")]
+    [Migration("20220403175537_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,6 +228,9 @@ namespace TurtleLibrary.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CheckedOutToId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<byte[]>("CurrentImage")
                         .HasColumnType("varbinary(max)");
 
@@ -238,6 +241,8 @@ namespace TurtleLibrary.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CheckedOutToId");
 
                     b.ToTable("Turtle");
                 });
@@ -291,6 +296,15 @@ namespace TurtleLibrary.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TurtleLibrary.Models.Turtle", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CheckedOutTo")
+                        .WithMany()
+                        .HasForeignKey("CheckedOutToId");
+
+                    b.Navigation("CheckedOutTo");
                 });
 #pragma warning restore 612, 618
         }

@@ -47,21 +47,6 @@ namespace TurtleLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Turtle",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OriginalImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    CurrentImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Turtle", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -167,6 +152,28 @@ namespace TurtleLibrary.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Turtle",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OriginalImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    CurrentImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    CheckedOutToId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Turtle", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Turtle_AspNetUsers_CheckedOutToId",
+                        column: x => x.CheckedOutToId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -205,6 +212,11 @@ namespace TurtleLibrary.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turtle_CheckedOutToId",
+                table: "Turtle",
+                column: "CheckedOutToId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
