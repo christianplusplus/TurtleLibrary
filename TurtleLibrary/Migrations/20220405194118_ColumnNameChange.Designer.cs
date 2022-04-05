@@ -10,8 +10,8 @@ using TurtleLibrary.Data;
 namespace TurtleLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220403175537_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220405194118_ColumnNameChange")]
+    partial class ColumnNameChange
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -228,21 +228,21 @@ namespace TurtleLibrary.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CheckedOutToId")
+                    b.Property<string>("CheckedOutById")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<byte[]>("CurrentImage")
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("OriginalImage")
+                    b.Property<byte[]>("OriginalPortrait")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("Portrait")
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CheckedOutToId");
+                    b.HasIndex("CheckedOutById");
 
                     b.ToTable("Turtle");
                 });
@@ -300,11 +300,11 @@ namespace TurtleLibrary.Migrations
 
             modelBuilder.Entity("TurtleLibrary.Models.Turtle", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CheckedOutTo")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CheckedOutBy")
                         .WithMany()
-                        .HasForeignKey("CheckedOutToId");
+                        .HasForeignKey("CheckedOutById");
 
-                    b.Navigation("CheckedOutTo");
+                    b.Navigation("CheckedOutBy");
                 });
 #pragma warning restore 612, 618
         }

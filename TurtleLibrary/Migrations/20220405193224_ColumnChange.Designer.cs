@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TurtleLibrary.Data;
 
 namespace TurtleLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220405193224_ColumnChange")]
+    partial class ColumnChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,13 +231,13 @@ namespace TurtleLibrary.Migrations
                     b.Property<string>("CheckedOutById")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<byte[]>("CurrentImage")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("OriginalPortrait")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("Portrait")
+                    b.Property<byte[]>("OriginalImage")
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");

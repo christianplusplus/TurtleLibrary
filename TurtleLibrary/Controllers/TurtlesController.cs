@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -56,8 +57,18 @@ namespace TurtleLibrary.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,OriginalImage,CurrentImage")] Turtle turtle)
+        public async Task<IActionResult> Create(CreateTurtleViewModel turtleVM)
         {
+            using var memoryStream = new MemoryStream();
+            await turtleVM.Image.CopyToAsync(memoryStream);
+            byte[] image = memoryStream.ToArray();
+
+            Turtle turtle = new()
+            {
+                Name = turtleVM.Name,
+                OriginalPortrait = image,
+                Portrait = image
+            };
             if (ModelState.IsValid)
             {
                 _context.Add(turtle);

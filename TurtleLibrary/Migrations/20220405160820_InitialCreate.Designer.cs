@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TurtleLibrary.Data;
 
 namespace TurtleLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220405160820_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,21 +228,21 @@ namespace TurtleLibrary.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CheckedOutById")
+                    b.Property<string>("CheckedOutToId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("CurrentImage")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("OriginalPortrait")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("Portrait")
+                    b.Property<byte[]>("OriginalImage")
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CheckedOutById");
+                    b.HasIndex("CheckedOutToId");
 
                     b.ToTable("Turtle");
                 });
@@ -298,11 +300,11 @@ namespace TurtleLibrary.Migrations
 
             modelBuilder.Entity("TurtleLibrary.Models.Turtle", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CheckedOutBy")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CheckedOutTo")
                         .WithMany()
-                        .HasForeignKey("CheckedOutById");
+                        .HasForeignKey("CheckedOutToId");
 
-                    b.Navigation("CheckedOutBy");
+                    b.Navigation("CheckedOutTo");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,3 @@
+﻿@model byte[]
+
+<img src=@(@Model == null ? "red-x.png" : $"data:image/png;base64,{Convert.ToBase64String(@Model)}") height="100">

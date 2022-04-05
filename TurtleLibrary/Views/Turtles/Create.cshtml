@@ -1,16 +1,12 @@
-﻿@model TurtleLibrary.Models.Turtle
+﻿@model TurtleLibrary.Models.CreateTurtleViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Turtle</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -18,14 +14,9 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OriginalImage" class="control-label"></label>
-                <input asp-for="OriginalImage" class="form-control" />
-                <span asp-validation-for="OriginalImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CurrentImage" class="control-label"></label>
-                <input asp-for="CurrentImage" class="form-control" />
-                <span asp-validation-for="CurrentImage" class="text-danger"></span>
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" accept="image/*" />
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
