@@ -9,10 +9,15 @@ namespace TurtleLibrary.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext() : base()
+        {
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-        public DbSet<TurtleLibrary.Models.Turtle> Turtle { get; set; }
+        public DbSet<TurtleLibrary.Models.Turtle> Turtles { get; set; }
+        public DbSet<TurtleLibrary.Models.Image> Images { get; set; }
     }
 }

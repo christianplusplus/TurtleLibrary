@@ -19,7 +19,7 @@ namespace TurtleLibrary.Controllers
 
         public async Task<IActionResult> Browse()
         {
-            return View(await _context.Turtle.ToListAsync());
+            return View(await _context.Turtles.ToListAsync());
         }
     }
 }

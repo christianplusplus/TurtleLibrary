@@ -25,7 +25,7 @@ namespace TurtleLibrary.Controllers
         // GET: Turtles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Turtle.ToListAsync());
+            return View(await _context.Turtles.ToListAsync());
         }
 
         // GET: Turtles/Details/5
@@ -36,7 +36,7 @@ namespace TurtleLibrary.Controllers
                 return NotFound();
             }
 
-            var turtle = await _context.Turtle
+            var turtle = await _context.Turtles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (turtle == null)
             {
@@ -62,15 +62,16 @@ namespace TurtleLibrary.Controllers
             using var memoryStream = new MemoryStream();
             await turtleVM.Image.CopyToAsync(memoryStream);
             byte[] image = memoryStream.ToArray();
-
+            Image OriginalPortrait = new() { Data = image };
             Turtle turtle = new()
             {
                 Name = turtleVM.Name,
-                OriginalPortrait = image,
-                Portrait = image
+                OriginalPortrait = OriginalPortrait,
+                Portrait = OriginalPortrait
             };
             if (ModelState.IsValid)
             {
+                _context.Add(OriginalPortrait);
                 _context.Add(turtle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +87,7 @@ namespace TurtleLibrary.Controllers
                 return NotFound();
             }
 
-            var turtle = await _context.Turtle.FindAsync(id);
+            var turtle = await _context.Turtles.FindAsync(id);
             if (turtle == null)
             {
                 return NotFound();
@@ -137,7 +138,7 @@ namespace TurtleLibrary.Controllers
                 return NotFound();
             }
 
-            var turtle = await _context.Turtle
+            var turtle = await _context.Turtles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (turtle == null)
             {
@@ -152,15 +153,15 @@ namespace TurtleLibrary.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var turtle = await _context.Turtle.FindAsync(id);
-            _context.Turtle.Remove(turtle);
+            var turtle = await _context.Turtles.FindAsync(id);
+            _context.Turtles.Remove(turtle);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TurtleExists(int id)
         {
-            return _context.Turtle.Any(e => e.Id == id);
+            return _context.Turtles.Any(e => e.Id == id);
         }
     }
 }

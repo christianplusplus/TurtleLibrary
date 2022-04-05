@@ -47,6 +47,19 @@ namespace TurtleLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Data = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -153,23 +166,35 @@ namespace TurtleLibrary.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Turtle",
+                name: "Turtles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OriginalImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    CurrentImage = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    CheckedOutToId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    OriginalPortraitId = table.Column<int>(type: "int", nullable: true),
+                    PortraitId = table.Column<int>(type: "int", nullable: true),
+                    CheckedOutById = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Turtle", x => x.Id);
+                    table.PrimaryKey("PK_Turtles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Turtle_AspNetUsers_CheckedOutToId",
-                        column: x => x.CheckedOutToId,
+                        name: "FK_Turtles_AspNetUsers_CheckedOutById",
+                        column: x => x.CheckedOutById,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Turtles_Images_OriginalPortraitId",
+                        column: x => x.OriginalPortraitId,
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Turtles_Images_PortraitId",
+                        column: x => x.PortraitId,
+                        principalTable: "Images",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -214,9 +239,19 @@ namespace TurtleLibrary.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Turtle_CheckedOutToId",
-                table: "Turtle",
-                column: "CheckedOutToId");
+                name: "IX_Turtles_CheckedOutById",
+                table: "Turtles",
+                column: "CheckedOutById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turtles_OriginalPortraitId",
+                table: "Turtles",
+                column: "OriginalPortraitId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turtles_PortraitId",
+                table: "Turtles",
+                column: "PortraitId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -237,13 +272,16 @@ namespace TurtleLibrary.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Turtle");
+                name: "Turtles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Images");
         }
     }
 }

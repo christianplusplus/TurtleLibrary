@@ -10,8 +10,8 @@ using TurtleLibrary.Data;
 namespace TurtleLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220405194118_ColumnNameChange")]
-    partial class ColumnNameChange
+    [Migration("20220405213558_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -221,6 +221,21 @@ namespace TurtleLibrary.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("TurtleLibrary.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("TurtleLibrary.Models.Turtle", b =>
                 {
                     b.Property<int>("Id")
@@ -234,17 +249,21 @@ namespace TurtleLibrary.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("OriginalPortrait")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int?>("OriginalPortraitId")
+                        .HasColumnType("int");
 
-                    b.Property<byte[]>("Portrait")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int?>("PortraitId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CheckedOutById");
 
-                    b.ToTable("Turtle");
+                    b.HasIndex("OriginalPortraitId");
+
+                    b.HasIndex("PortraitId");
+
+                    b.ToTable("Turtles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -304,7 +323,19 @@ namespace TurtleLibrary.Migrations
                         .WithMany()
                         .HasForeignKey("CheckedOutById");
 
+                    b.HasOne("TurtleLibrary.Models.Image", "OriginalPortrait")
+                        .WithMany()
+                        .HasForeignKey("OriginalPortraitId");
+
+                    b.HasOne("TurtleLibrary.Models.Image", "Portrait")
+                        .WithMany()
+                        .HasForeignKey("PortraitId");
+
                     b.Navigation("CheckedOutBy");
+
+                    b.Navigation("OriginalPortrait");
+
+                    b.Navigation("Portrait");
                 });
 #pragma warning restore 612, 618
         }
