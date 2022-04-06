@@ -163,5 +163,25 @@ namespace TurtleLibrary.Controllers
         {
             return _context.Turtles.Any(e => e.Id == id);
         }
+
+        public void Seed()
+        {
+            foreach (var file in Directory.GetFiles(Path.Combine("Data", "SeedContent")))
+            {
+                Image portrait = new()
+                {
+                    Data = System.IO.File.ReadAllBytes(file)
+                };
+                Turtle turtle = new()
+                {
+                    Name = Path.GetFileNameWithoutExtension(file),
+                    OriginalPortrait = portrait,
+                    Portrait = portrait
+                };
+                _context.Add(portrait);
+                _context.Add(turtle);
+            }
+            _context.SaveChanges();
+        }
     }
 }

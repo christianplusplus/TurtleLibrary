@@ -16,9 +16,9 @@ namespace TurtleLibrary
             return memoryStream.ToArray();
         }
 
-        public static string ToImgSrc(this byte[] bytes)
+        public static string ToImgSrc(this byte[] data)
         {
-            return "data:image/png;base64," + Convert.ToBase64String(bytes);
+            return "data:image/png;base64," + Convert.ToBase64String(data);
         }
     }
 }
