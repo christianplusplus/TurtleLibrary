@@ -166,7 +166,7 @@ namespace TurtleLibrary.Controllers
 
         public void Seed()
         {
-            foreach (var file in Directory.GetFiles(Path.Combine("Data", "SeedContent")))
+            foreach(var file in Directory.GetFiles(Path.Combine("Data", "SeedContent")))
             {
                 Image portrait = new()
                 {
