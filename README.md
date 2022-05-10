@@ -3,3 +3,4 @@
 * turtle checkout
 * turtle return / image recognition
 * automatic data resets/seeding
+* deployment
