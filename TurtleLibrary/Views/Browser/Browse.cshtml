@@ -11,7 +11,7 @@
                 @Html.DisplayNameFor(model => model.Portrait)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-area="" asp-controller="Browser" asp-action="BrowseOrdered" asp-route-isAscending="@(!((string)ViewData["orderByProperty"]=="Name" && (bool)ViewData["isAscending"]))" asp-route-orderByProperty="Name">@Html.DisplayNameFor(model => model.Name)</a>
             </th>
             <th>
                 Availability
